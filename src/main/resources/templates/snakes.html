@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Змії</title>
+    <link rel="stylesheet" href="main.css">
+	<link rel="stylesheet" href="snakes.css">
+    <script src="main.js" defer></script>
+	<script src="snakes.js"></script>
+	<script src="GameRenderer.js"></script>
+	<script src="GameSocket.js"></script>
+
+</head>
+<body>
+<div>
+   <div class="header">
+        <div class="left">
+            <button class="burgerMenu-btn" onclick="toggleSidebar()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                </svg>
+            </button>
+            <div class="header-text">
+                <h1>Змії</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <a class="menu-l" href="menu.html">Меню</a>
+            <a class="statistics-l" href="statistics.html">Статистика</a>
+            <a class="setings-l" href="setings.html">Налаштування</a>
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="container">
+                <div id="score">Score: 0</div>
+                <canvas id="gameCanvas" width="600" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Прозорий контейнер для кнопок керування -->
+    <div class="control-container" id="controlContainer">
+        <button onclick="sendMove('up')">▲</button>
+        <div class="horizontal-controls">
+            <button onclick="sendMove('left')">◄</button>
+            <button onclick="sendMove('right')">►</button>
+        </div>
+        <button onclick="sendMove('down')">▼</button>
+    </div>
+</div>
+</body>
+<script>
+	// Створюємо об'єкт рендерера
+const renderer = new GameRenderer('gameCanvas', 20);
+
+// Список гравців
+const players = [
+    { name: 'Player1', length: 5 },
+    { name: 'Player2', length: 10 },
+    { name: 'Player3', length: 7 }
+];
+
+// Малюємо ігрове поле
+const cells = [
+    { x: 10, y: 10, color: 'green' },
+    { x: 11, y: 10, color: 'red' },
+    { x: 12, y: 12, color: 'blue' }
+];
+
+renderer.render(cells);
+renderer.drawPlayersList(players);
+
+
+</script>
+
+</html>

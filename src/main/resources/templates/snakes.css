@@ -1,0 +1,29 @@
+.control-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.5); /* напівпрозорий фон */
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: move;
+    z-index: 10;
+}
+
+.control-container button {
+    background-color: #007bff;
+    color: white;
+    font-size: 20px;
+    border: none;
+    padding: 10px;
+    margin: 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.control-container .horizontal-controls {
+    display: flex;
+    gap: 10px;
+}

@@ -7,6 +7,6 @@ public class GameController {
     
     @GetMapping("/game")
     public String game() {
-        return "game"; // поверне game.html з папки templates
+        return "snakes.html"; // поверне game.html з папки templates
     }
 }

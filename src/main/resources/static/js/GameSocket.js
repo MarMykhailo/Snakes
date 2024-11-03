@@ -1,18 +1,36 @@
 class GameSocket {
-    constructor(url) {
-        this.socket = new WebSocket(url);
+    constructor() {
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${wsProtocol}//192.168.0.103:8080/snake-websocket`;
+        this.connect(wsUrl);
+    }
+
+    connect(wsUrl) {
+        this.socket = new WebSocket(wsUrl);
 
         this.socket.onopen = () => {
             console.log("WebSocket connection established");
+            this.sendMessage({
+                type: "connect",
+                message: "Hello server!",
+                timestamp: Date.now()
+            });
         };
 
         this.socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            this.handleServerMessage(data);
+            try {
+                const data = JSON.parse(event.data);
+                console.log("Received message:", data);
+                this.handleServerMessage(data);
+            } catch (e) {
+                console.error("Error parsing message:", e);
+                console.log("Raw message:", event.data);
+            }
         };
 
-        this.socket.onclose = () => {
-            console.log("WebSocket connection closed");
+        this.socket.onclose = (event) => {
+            console.log("WebSocket connection closed", event);
+            setTimeout(() => this.connect(wsUrl), 5000);
         };
 
         this.socket.onerror = (error) => {
@@ -20,28 +38,81 @@ class GameSocket {
         };
     }
 
-    // Метод для надсилання повідомлення на сервер
-    sendMoveCommand(direction) {
-        const message = { type: "move", direction: direction };
-        this.socket.send(JSON.stringify(message));
+    sendMessage(message) {
+        if (this.socket.readyState === WebSocket.OPEN) {
+            const messageWithTimestamp = {
+                ...message,
+                timestamp: Date.now()
+            };
+            this.socket.send(JSON.stringify(messageWithTimestamp));
+        } else {
+            console.warn("WebSocket is not open. Message not sent:", message);
+        }
     }
 
-    // Обробка повідомлень від сервера
+    sendMoveCommand(direction) {
+        this.sendMessage({
+            type: "move",
+            direction: direction
+        });
+    }
+
     handleServerMessage(data) {
-        if (data.type === "update") {
-            // Обробка оновлення стану гри, наприклад, позицій змій
-            console.log("Game update:", data.payload);
-        } else if (data.type === "scoreUpdate") {
-            // Обробка оновлення рахунку
-            document.getElementById("score").textContent = `Score: ${data.payload.score}`;
+        switch (data.type) {
+            case "connected":
+                console.log("Connected to server:", data.message);
+                break;
+            case "welcome":
+                console.log("Welcome message:", data.message);
+                break;
+            case "moveConfirmed":
+                console.log("Move confirmed:", data.direction);
+                break;
+            case "update":
+                this.handleGameUpdate(data.payload);
+                break;
+            case "scoreUpdate":
+                this.updateScore(data.payload);
+                break;
+            case "error":
+                console.error("Server error:", data.message);
+                break;
+            default:
+                console.warn("Unknown message type:", data.type);
+        }
+    }
+
+    handleGameUpdate(payload) {
+        console.log("Game update received:", payload);
+        // Тут буде ваша логіка оновлення гри
+    }
+
+    updateScore(payload) {
+        const scoreElement = document.getElementById("score");
+        if (scoreElement && payload.score !== undefined) {
+            scoreElement.textContent = `Score: ${payload.score}`;
         }
     }
 }
 
-// Ініціалізація WebSocket-з'єднання
-const gameSocket = new GameSocket("ws://localhost:8080");
+// Створюємо єдиний екземпляр GameSocket
+const gameSocket = new GameSocket();
 
 // Функція для обробки натиснень кнопок керування
 function sendMove(direction) {
     gameSocket.sendMoveCommand(direction);
 }
+
+// Експортуємо gameSocket для використання в інших файлах
+window.gameSocket = gameSocket;
+/*
+// Ініціалізація WebSocket-з'єднання
+const gameSocket = new GameSocket("ws://192.168.0.103:8080/snake-websocket");
+
+// Функція для обробки натиснень кнопок керування
+function sendMove(direction) {
+    gameSocket.sendMoveCommand(direction);
+}*/
+
+
+

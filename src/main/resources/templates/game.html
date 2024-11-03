@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multiplayer Snake</title>
+    <style>
+        #gameCanvas {
+            border: 1px solid black;
+        }
+        .game-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="600" height="400"></canvas>
+        <div id="score">Score: 0</div>
+    </div>
+
+    <!-- Підключення WebSocket -->
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    
+    <!-- Підключення нашого JavaScript файлу зі змійкою -->
+    <script src="/js/snake.js"></script>
+
+    <script>
+        // Ініціалізація WebSocket з'єднання
+        const socket = new SockJS('/snake-websocket');
+        const stompClient = Stomp.over(socket);
+        
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            
+            // Підписка на оновлення гри
+            stompClient.subscribe('/topic/game', function(message) {
+                const gameState = JSON.parse(message.body);
+                updateGame(gameState);
+            });
+        });
+    </script>
+</body>
+</html>

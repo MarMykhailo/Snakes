@@ -1,35 +1,29 @@
-//що має робитися на фронтенді
-//гравіці мають натискати на клавіші і передавати їх на сервер
-//сервер це обробляє і відправляє на клієнта
-
-//такс трбе клас snake і клас player
-//клас game відповідає за відмальовку ігри
-//треба ще клас для сокетів які будуть відправляти і приймати дані
-
-
 window.onload = function() {
     const controlContainer = document.getElementById("controlContainer");
 
     if (controlContainer) {
-        controlContainer.onmousedown = function(event) {
+        function moveAt(pageX, pageY, shiftX, shiftY) {
+            controlContainer.style.left = (pageX - shiftX) + "px";
+            controlContainer.style.top = (pageY - shiftY) + "px";
+        }
+
+        function onPointerMove(event) {
+            moveAt(event.pageX, event.pageY, shiftX, shiftY);
+        }
+
+        let shiftX, shiftY;
+
+        controlContainer.onpointerdown = function(event) {
             event.preventDefault();
-            let shiftX = event.clientX - controlContainer.getBoundingClientRect().left;
-            let shiftY = event.clientY - controlContainer.getBoundingClientRect().top;
+            shiftX = event.clientX - controlContainer.getBoundingClientRect().left;
+            shiftY = event.clientY - controlContainer.getBoundingClientRect().top;
 
-            function moveAt(pageX, pageY) {
-                controlContainer.style.left = pageX - shiftX + "px";
-                controlContainer.style.top = pageY - shiftY + "px";
-            }
+            moveAt(event.pageX, event.pageY, shiftX, shiftY);
+            document.addEventListener("pointermove", onPointerMove);
 
-            function onMouseMove(event) {
-                moveAt(event.pageX, event.pageY);
-            }
-
-            document.addEventListener("mousemove", onMouseMove);
-
-            document.onmouseup = function() {
-                document.removeEventListener("mousemove", onMouseMove);
-                document.onmouseup = null;
+            document.onpointerup = function() {
+                document.removeEventListener("pointermove", onPointerMove);
+                document.onpointerup = null;
             };
         };
 

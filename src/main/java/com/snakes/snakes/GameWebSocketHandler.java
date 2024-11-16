@@ -4,6 +4,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.snakes.snakes.Services.GameService;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private GameService gameService;
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.put(session.getId(), session);
@@ -37,8 +40,8 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
                 case "connect":
                     handleConnect(session, messageData);
                     break;
-                case "move":
-                    handleMove(session, messageData);
+                case "game":
+                    gameService.handleMassage(session, messageData);
                     break;
                 default:
                     Map<String, Object> errorMessage = new HashMap<>();

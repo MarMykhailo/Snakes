@@ -52,7 +52,8 @@ class GameSocket {
 
     sendMoveCommand(direction) {
         this.sendMessage({
-            type: "move",
+            type: "game",
+            action: "changeDirection",
             direction: direction
         });
     }
@@ -69,7 +70,7 @@ class GameSocket {
                 console.log("Move confirmed:", data.direction);
                 break;
             case "update":
-                this.handleGameUpdate(data.payload);
+                this.handleGameUpdate(data);
                 break;
             case "scoreUpdate":
                 this.updateScore(data.payload);
@@ -84,7 +85,8 @@ class GameSocket {
 
     handleGameUpdate(payload) {
         console.log("Game update received:", payload);
-        // Тут буде ваша логіка оновлення гри
+        //window.
+        gameRenderer.render(payload.cells);
     }
 
     updateScore(payload) {

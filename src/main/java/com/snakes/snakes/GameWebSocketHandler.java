@@ -14,7 +14,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private GameService gameService;
+    private GameService gameService = new GameService();
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.put(session.getId(), session);
@@ -63,16 +63,6 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         welcomeMessage.put("message", "Welcome to the game!");
         welcomeMessage.put("timestamp", System.currentTimeMillis());
         sendJsonMessage(session, welcomeMessage);
-    }
-
-    private void handleMove(WebSocketSession session, Map<String, Object> messageData) throws Exception {
-        String direction = (String) messageData.get("direction");
-        // Тут буде ваша логіка обробки руху
-        Map<String, Object> moveConfirmedMessage = new HashMap<>();
-        moveConfirmedMessage.put("type", "moveConfirmed");
-        moveConfirmedMessage.put("direction", direction);
-        moveConfirmedMessage.put("timestamp", System.currentTimeMillis());
-        sendJsonMessage(session, moveConfirmedMessage);
     }
 
     private void sendJsonMessage(WebSocketSession session, Map<String, Object> messageData) throws Exception {

@@ -19,6 +19,7 @@ public class GameService {
     public GameService() {
         snake = new Snake();
         System.out.println("Game service created");
+        snake.body.add(new Point(8, 9));
         snake.body.add(new Point(9, 9));
     }
 
@@ -45,6 +46,12 @@ public class GameService {
 
     public void changeGameState(WebSocketSession session, Map<String, Object> messageData) {
         
+    }
+
+    public void startGame(WebSocketSession session) {
+        // початок гри
+        snake = new Snake();
+        draw(session);
     }
 
     public void changeDirection(WebSocketSession session, Map<String, Object> messageData) {

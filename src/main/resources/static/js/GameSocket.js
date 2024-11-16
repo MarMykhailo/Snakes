@@ -86,7 +86,7 @@ class GameSocket {
     handleGameUpdate(payload) {
         console.log("Game update received:", payload);
         //window.
-        gameRenderer.render(payload.cells);
+        renderer.render(payload.cells);
     }
 
     updateScore(payload) {

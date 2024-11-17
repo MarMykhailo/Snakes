@@ -34,11 +34,14 @@ window.onload = function() {
         console.error("Control container not found");
     }
 };
-
-function stopGame() {
-    window.gameSocket.sendStopCommand();
-}
-
 function startGame() {
     window.gameSocket.sendStartCommand();
 }
+function pauseGame() {
+    window.gameSocket.sendPauseCommand();
+}
+
+function resumeGame() {
+    window.gameSocket.sendResumeCommand();
+}
+

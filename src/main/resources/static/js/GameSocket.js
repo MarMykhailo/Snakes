@@ -103,11 +103,19 @@ class GameSocket {
         });
     }
 
-    sendStopCommand(direction) {
+    sendPauseCommand(direction) {
         this.sendMessage({
             type: "game",
             action: "changeState",
-            state: "stop"
+            state: "pause"
+        });
+    }
+
+    sendResumeCommand(direction) {
+        this.sendMessage({
+            type: "game",
+            action: "changeState",
+            state: "resume"
         });
     }
 }

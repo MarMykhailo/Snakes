@@ -15,15 +15,16 @@ import com.snakes.snakes.Models.Player;
 import com.snakes.snakes.Models.Room;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 public class GameService {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     Player player;
     Room room;
+
     public GameService() {
         this.player = new Player("Player");
-        //this.room = new Room();
+        this.room = new Room();
+        room.players.add(player);
     }
 
     public void handleMassage(WebSocketSession session, Map<String, Object> messageData) throws Exception {
@@ -61,8 +62,12 @@ public class GameService {
             case "start":
                 new Thread(() -> startGame(session)).start();
                 break;
-            case "stop":
-                new Thread(() -> stopGame(session)).start();
+            case "pause":
+                new Thread(() -> pauseGame(session)).start();
+                break;
+            case "resume":
+                System.out.println("resume");
+                new Thread(() -> resumeGame(session)).start();
                 break;
             default:
                 Map<String, Object> errorMessage = new HashMap<>();
@@ -73,9 +78,12 @@ public class GameService {
     }
 
     public void startGame(WebSocketSession session) {
-        // початок гри //стан кімнати 
-        while (true) {
-            update();
+        room.isStarted = true;
+        room.isRunning = true;
+        // початок гри //стан кімнати
+        while (room.isStarted) {
+            if (room.isRunning)
+                update();
             draw(session);
             try {
                 Thread.sleep(1000);
@@ -85,21 +93,24 @@ public class GameService {
         }
     }
 
-    public void stopGame(WebSocketSession session) {
-        // кінець гри //стан кімнати зсінюється
+    public void pauseGame(WebSocketSession session) {
+        room.isRunning = false;
+    }
+
+    public void resumeGame(WebSocketSession session) {
+        room.isRunning = true;
     }
 
     public void changeDirection(WebSocketSession session, Map<String, Object> messageData) {
-        String direction = (String) messageData.get("direction"); 
-        player.snake.changeDirection(direction);
-        //update();
-        //draw(session);
+        String direction = (String) messageData.get("direction");
+        room.players.get(0).snake.changeDirection(direction);
+        // update();
+        // draw(session);
     }
-
 
     public void update() {
         // оновлення позиції змійки
-        player.snake.update();
+        room.players.get(0).snake.update();
     }
 
     public void draw(WebSocketSession session){
@@ -107,7 +118,7 @@ public class GameService {
         try {
             Map<String, Object> messageData = new HashMap<>();
             messageData.put("type", "update");
-            messageData.put("cells", player.snake.body.stream().map(cell -> {
+            messageData.put("cells",  room.players.get(0).snake.body.stream().map(cell -> {
                 Map<String, Object> cellData = new HashMap<>();
                 cellData.put("x", cell.x);
                 cellData.put("y", cell.y);

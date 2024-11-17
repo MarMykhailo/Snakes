@@ -85,7 +85,6 @@ class GameSocket {
 
     handleGameUpdate(payload) {
         console.log("Game update received:", payload);
-        //window.
         renderer.render(payload.cells);
     }
 
@@ -94,6 +93,22 @@ class GameSocket {
         if (scoreElement && payload.score !== undefined) {
             scoreElement.textContent = `Score: ${payload.score}`;
         }
+    }
+
+    sendStartCommand(direction) {
+        this.sendMessage({
+            type: "game",
+            action: "changeState",
+            state: "start"
+        });
+    }
+
+    sendStopCommand(direction) {
+        this.sendMessage({
+            type: "game",
+            action: "changeState",
+            state: "stop"
+        });
     }
 }
 

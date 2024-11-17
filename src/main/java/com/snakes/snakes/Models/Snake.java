@@ -2,10 +2,6 @@ package com.snakes.snakes.Models;
 
 import java.util.List;
 
-
-
-
-
 public class Snake {
     public List<Point> body;
     public Point direction;

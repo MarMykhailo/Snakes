@@ -77,5 +77,6 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) throws Exception {
         sessions.remove(session.getId());
         System.out.println("WebSocket connection closed: " + session.getId());
+        gameService.removePlayer(session);
     }
 }

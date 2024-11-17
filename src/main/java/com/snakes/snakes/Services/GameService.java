@@ -30,7 +30,6 @@ public class GameService {
                 changeState(session, messageData);
                 break;
             case "changeDirection":
-                System.out.println("changeDirection");
                 changeDirection(session, messageData);
                 break;
             default:
@@ -141,5 +140,9 @@ public class GameService {
         Player player = new Player("Player");
         player.session = session;
         room.players.add(player);
+    }
+
+    public void removePlayer(WebSocketSession session) {
+        room.players.removeIf(player -> player.session.equals(session));
     }
 }

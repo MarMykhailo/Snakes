@@ -3,6 +3,8 @@ package com.snakes.snakes.Services;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.TextMessage;
@@ -13,8 +15,10 @@ import com.snakes.snakes.Models.Player;
 import com.snakes.snakes.Models.Room;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 public class GameService {
-    
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
+
     Player player;
     Room room;
     public GameService() {
@@ -29,6 +33,7 @@ public class GameService {
                 changeState(session, messageData);
                 break;
             case "changeDirection":
+                System.out.println("changeDirection");
                 changeDirection(session, messageData);
                 break;
             default:
@@ -40,14 +45,21 @@ public class GameService {
     }
 
     public void sendJsonMessage(WebSocketSession session, Map<String, Object> messageData) {
-       
+        executorService.submit(() -> {
+            try {
+                String jsonMessage = new ObjectMapper().writeValueAsString(messageData);
+                session.sendMessage(new TextMessage(jsonMessage));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void changeState(WebSocketSession session, Map<String, Object> messageData) {
         String state = (String) messageData.get("state");
         switch (state) {
             case "start":
-                startGame(session);
+                new Thread(() -> startGame(session)).start();
                 break;
             case "stop":
                 new Thread(() -> stopGame(session)).start();
@@ -58,7 +70,6 @@ public class GameService {
                 errorMessage.put("message", "Unknown state: " + state);
                 sendJsonMessage(session, errorMessage);
         }
-        
     }
 
     public void startGame(WebSocketSession session) {
@@ -72,7 +83,6 @@ public class GameService {
                 e.printStackTrace();
             }
         }
-        
     }
 
     public void stopGame(WebSocketSession session) {
@@ -95,7 +105,6 @@ public class GameService {
     public void draw(WebSocketSession session){
         // відправка нової позиції змійки
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> messageData = new HashMap<>();
             messageData.put("type", "update");
             messageData.put("cells", player.snake.body.stream().map(cell -> {
@@ -105,9 +114,7 @@ public class GameService {
                 cellData.put("color", "green");
                 return cellData;
             }).collect(Collectors.toList()));
-            String jsonMessage = objectMapper.writeValueAsString(messageData);
-            System.out.println("Sending message: " + jsonMessage);
-            session.sendMessage(new TextMessage(jsonMessage));
+            sendJsonMessage(session, messageData);
         } catch (Exception e) {
             e.printStackTrace();
         }

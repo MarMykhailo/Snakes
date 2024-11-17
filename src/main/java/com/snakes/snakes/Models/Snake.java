@@ -34,7 +34,6 @@ public class Snake {
 
     public void update()
     {
-        // оновлення позиції змійки
         Point newHead = body.get(0).add(direction);
         body.add(0, newHead);
         body.remove(body.size() - 1);
@@ -42,13 +41,7 @@ public class Snake {
 
     public void grow()
     {
-        // збільшення довжини змійки
         Point tail = body.get(body.size() - 1);
         body.add(tail);
     }
-
-    /*public String toString() {
-        
-    }*/
-
 }

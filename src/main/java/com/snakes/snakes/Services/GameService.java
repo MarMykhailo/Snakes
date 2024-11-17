@@ -66,7 +66,6 @@ public class GameService {
                 new Thread(() -> pauseGame(session)).start();
                 break;
             case "resume":
-                System.out.println("resume");
                 new Thread(() -> resumeGame(session)).start();
                 break;
             default:
@@ -84,9 +83,9 @@ public class GameService {
         while (room.isStarted) {
             if (room.isRunning)
                 update();
-            draw(session);
+                draw(session);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

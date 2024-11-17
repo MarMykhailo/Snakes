@@ -68,3 +68,6 @@ class GameRenderer {
         });
     }
 }
+
+
+const renderer = new GameRenderer('gameCanvas', 20);;

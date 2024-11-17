@@ -34,6 +34,8 @@ window.onload = function() {
         console.error("Control container not found");
     }
 };
+
+
 function startGame() {
     window.gameSocket.sendStartCommand();
 }
@@ -44,4 +46,5 @@ function pauseGame() {
 function resumeGame() {
     window.gameSocket.sendResumeCommand();
 }
+
 

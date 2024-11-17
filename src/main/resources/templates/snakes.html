@@ -6,10 +6,6 @@
     <title>Змії</title>
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/snakes.css">
-    <script type="text/javascript" src="/js/main.js" defer></script>
-    <script type="text/javascript" src="/js/snakes.js"></script>
-    <script type="text/javascript" src="/js/GameRenderer.js"></script>
-    <script type="text/javascript" src="/js/GameSocket.js"></script>
 
 </head>
 <body>
@@ -21,10 +17,22 @@
                     <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
                 </svg>
             </button>
-            
         </div>
 		<div class="header-text">
             <h1>Змії</h1>
+        </div>
+        <div class="middle">
+            <button class="headerbtn" onclick="startGame()">Start</button>
+            <button class="headerbtn" onclick="pauseGame()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16">
+                    <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
+                </svg>
+            </button>
+            <button class="headerbtn" onclick="resumeGame()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                    <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                </svg>
+            </button>
         </div>
     </div>
     <div class="container">
@@ -35,10 +43,6 @@
         </div>
         <div class="main-content" id="mainContent">
             <div class="container">
-                <div id="score">Score: 0</div>
-                <button onclick="startGame()">Start</button>
-                <button onclick="pauseGame()">Stop</button>
-                <button onclick="resumeGame()">Resume</button>
                 <canvas id="gameCanvas" width="600" height="400"></canvas>
             </div>
         </div>
@@ -55,29 +59,8 @@
     </div>
 </div>
 </body>
-<script>
-
-	// Створюємо об'єкт рендерера
-const renderer = new GameRenderer('gameCanvas', 20);
-
-// Список гравців
-const players = [
-    { name: 'Player1', length: 5 },
-    { name: 'Player2', length: 10 },
-    { name: 'Player3', length: 7 }
-];
-
-// Малюємо ігрове поле
-const cells = [
-    { x: 10, y: 10, color: 'green' },
-    { x: 11, y: 10, color: 'red' },
-    { x: 12, y: 12, color: 'blue' }
-];
-
-renderer.render(cells);
-renderer.drawPlayersList(players);
-
-
-</script>
-
+<script type="text/javascript" src="/js/main.js" defer></script>
+<script type="text/javascript" src="/js/GameRenderer.js"></script>
+<script type="text/javascript" src="/js/GameSocket.js"></script>
+<script type="text/javascript" src="/js/snakes.js"></script>
 </html>

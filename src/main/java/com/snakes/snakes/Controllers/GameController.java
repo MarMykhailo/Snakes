@@ -6,8 +6,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class GameController {
 
-    @GetMapping("/game")
-    public String game() {
-        return "snakes.html"; // поверне game.html з папки templates
+    @GetMapping("/")
+    public String menu() {
+        return "menu.html";
+    }
+
+    @GetMapping("/snakes")
+    public String snakes() {
+        return "snakes.html";
+    }
+
+    @GetMapping("/statistics")
+    public String statistics() {
+        return "statistics.html";
+    }
+
+    @GetMapping("/settings")
+    public String settings() {
+        return "settings.html";
     }
 }

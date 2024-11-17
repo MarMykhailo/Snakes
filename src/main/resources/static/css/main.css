@@ -40,7 +40,11 @@ a:hover, a:focus  {
     align-items: center;
 	justify-content: space-around;
 }
-
+.header-text 
+{
+   //padding: 4px;
+   
+}
 .main-content button
 {
     color: black;
@@ -56,6 +60,13 @@ a:hover, a:focus  {
     color: whitesmoke;
 }
 
+.right {
+	size:auto;
+    margin-left: auto;
+    display: flex;
+    padding: 4px;
+    align-items: center;
+}
 
 .left
 {
@@ -79,27 +90,7 @@ a:hover, a:focus  {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-	//display: none;
 }
-
-
-
-
-.header-text 
-{
-   //padding: 4px;
-   
-}
-
-
-.right {
-	size:auto;
-    margin-left: auto;
-    display: flex;
-    padding: 4px;
-    align-items: center;
-}
-
 
 .masage-btn {
     color: white;
@@ -110,6 +101,19 @@ a:hover, a:focus  {
     border: none;
     padding: 0;
     position: absolute;
+}
+
+.headerbtn
+{
+    color: white;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
+    border: none;
+    padding: 0;
+    position: absolute;
+    display: contents;
 }
 
 .masage-btn:hover {

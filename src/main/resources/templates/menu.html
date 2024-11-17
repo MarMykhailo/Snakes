@@ -1,44 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Multiplayer Snake</title>
-    <style>
-        #gameCanvas {
-            border: 1px solid black;
-        }
-        .game-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Змії</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <script type="text/javascript" src="/js/main.js" defer></script>
+    <script type="text/javascript" src="/js/GameRenderer.js"></script>
+    <script type="text/javascript" src="/js/GameSocket.js"></script>
+
 </head>
 <body>
-    <div class="game-container">
-        <canvas id="gameCanvas" width="600" height="400"></canvas>
-        <div id="score">Score: 0</div>
-    </div>
-
-    <!-- Підключення WebSocket -->
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    
-    <!-- Підключення нашого JavaScript файлу зі змійкою -->
-    <script src="/js/snake.js"></script>
-
-    <script>
-        // Ініціалізація WebSocket з'єднання
-        const socket = new SockJS('/snake-websocket');
-        const stompClient = Stomp.over(socket);
-        
-        stompClient.connect({}, function(frame) {
-            console.log('Connected: ' + frame);
+<div>
+   <div class="header">
+        <div class="left">
+            <button class="burgerMenu-btn" onclick="toggleSidebar()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                </svg>
+            </button>
             
-            // Підписка на оновлення гри
-            stompClient.subscribe('/topic/game', function(message) {
-                const gameState = JSON.parse(message.body);
-                updateGame(gameState);
-            });
-        });
-    </script>
+        </div>
+		<div class="header-text">
+            <h1>Змії</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <a class="statistics-l" href="statistics.html">Статистика</a>
+            <a class="setings-l" href="setings.html">Налаштування</a>
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="container">
+                <a href="/snakes" class="button">Змії</a>
+                <!-- <batton href=".html">Виживалка</batton> -->
+
+                <!--
+                - гавець вибирає тип гри  - у майбутньому має бути кілька ігор
+                - гравець вибирає кімнату із таблиці кімнат (кнопка навпроти кімнати і якщо гравець залогінився то він може почати гру )
+                - є опція створити кімнату -->
+
+                <table>
+                    <tr>
+                        <th>Гра</th>
+                        <th>Кімната</th>
+                        <th>Долучитися</th>
+                    </tr>
+                    <tr>
+                        <td>Змії</td>
+                        <td>1</td>
+                        <th>
+                            <button>Долучитися</button>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>Змії</td>
+                        <td>2</td>
+                        <th>
+                            <button>Долучитися</button>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>Змії</td>
+                        <td>3</td>
+                        <th>
+                            <button>Долучитися</button>
+                        </th>
+                    </tr>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+
 </html>

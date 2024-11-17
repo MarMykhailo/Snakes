@@ -34,6 +34,7 @@ public class Snake {
 
     public void update()
     {
+        if(body.size()< 2) return;
         Point newHead = body.get(0).add(direction);
         body.add(0, newHead);
         body.remove(body.size() - 1);

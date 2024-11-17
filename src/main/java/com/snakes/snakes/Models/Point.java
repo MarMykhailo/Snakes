@@ -12,4 +12,8 @@ public class Point {
     public Point add(Point other) {
         return new Point(this.x + other.x, this.y + other.y);
     }
+
+    public boolean equals(Point other) {
+        return this.x.equals(other.x) && this.y.equals(other.y);
+    }
 }

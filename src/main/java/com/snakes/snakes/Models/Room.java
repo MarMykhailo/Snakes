@@ -8,6 +8,7 @@ public class Room {
     public int maxPlayers;
     public String roomName;
     public List<Player> players;
+    public List<GameObject> objects;
     public boolean isStarted;
     public boolean isRunning;
 

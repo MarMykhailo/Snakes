@@ -16,4 +16,12 @@ public class Player {
         snake.body.add(new Point(9, 9));
     }
 
+    public Player(String name, Point point) {
+        this.name = name;
+        this.score = 0;
+        this.snake = new Snake();
+        snake.grow();
+        snake.grow();
+    }
+
 }

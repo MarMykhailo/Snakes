@@ -23,6 +23,17 @@ public class GameService {
         room = new Room();
     }
 
+    public void sendJsonMessage(WebSocketSession session, Map<String, Object> messageData) {
+        executorService.submit(() -> {
+            try {
+                String jsonMessage = new ObjectMapper().writeValueAsString(messageData);
+                session.sendMessage(new TextMessage(jsonMessage));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     public void handleMassage(WebSocketSession session, Map<String, Object> messageData) throws Exception {
         String messageType = (String) messageData.get("action");
         switch (messageType) {
@@ -38,17 +49,6 @@ public class GameService {
                 errorMessage.put("message", "Unknown message type: " + messageType);
                 sendJsonMessage(session, errorMessage);
         }
-    }
-
-    public void sendJsonMessage(WebSocketSession session, Map<String, Object> messageData) {
-        executorService.submit(() -> {
-            try {
-                String jsonMessage = new ObjectMapper().writeValueAsString(messageData);
-                session.sendMessage(new TextMessage(jsonMessage));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     public void changeState(WebSocketSession session, Map<String, Object> messageData) {
@@ -74,7 +74,6 @@ public class GameService {
     public void startGame(WebSocketSession session) {
         room.isStarted = true;
         room.isRunning = true;
-        // початок гри //стан кімнати
         while (room.isStarted) {
             if (room.isRunning)
                 update();
@@ -95,6 +94,7 @@ public class GameService {
         room.isRunning = true;
     }
 
+    //це має бути для змійок або для кімнати?
     public void changeDirection(WebSocketSession session, Map<String, Object> messageData) {
         String direction = (String) messageData.get("direction");
         Player player = room.players.stream()
@@ -110,6 +110,38 @@ public class GameService {
         // оновлення позиції змійки
         for (Player player : room.players) {
             player.snake.update();
+            // перевірка на зіткнення
+            // беру позицію голови змійки і перевіряю чи вона зіткнулася з чимось
+            // перевірка зіткнення з самою собою - смерть
+            if(player.snake.body.size() == 0) {
+                continue;
+            }
+            Point head = player.snake.body.get(0);
+
+            // Check collision with itself
+            for (int i = 1; i < player.snake.body.size(); i++) {
+                if (head.equals(player.snake.body.get(i))) {
+                    player.snake.body.clear();
+                    break;
+                }
+            }
+
+            // Check collision with other players' snakes
+            for (Player otherPlayer : room.players) {
+                if (otherPlayer != player) {
+                    for (Point point : otherPlayer.snake.body) {
+                        if (head.equals(point)) {
+                            player.snake.body.clear();
+                            break;
+                        }
+                    }
+                }
+            }
+
+
+
+            // зіткнення з обєктом на карті - залежить від типу обєкта
+            // зіткнення з іншою змійкою - смерть
         }
     }
 
@@ -137,7 +169,7 @@ public class GameService {
     }
 
     public void addPlayer(WebSocketSession session) {
-        Player player = new Player("Player");
+        Player player = new Player("Player", new Point((int) (Math.random() * 10) + 1, (int) (Math.random() * 10) + 1));
         player.session = session;
         room.players.add(player);
     }

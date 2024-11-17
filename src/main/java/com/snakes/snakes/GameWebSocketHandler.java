@@ -4,6 +4,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.snakes.snakes.Models.Player;
 import com.snakes.snakes.Services.GameService;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,6 +64,8 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         welcomeMessage.put("message", "Welcome to the game!");
         welcomeMessage.put("timestamp", System.currentTimeMillis());
         sendJsonMessage(session, welcomeMessage);
+
+        gameService.addPlayer(session);
     }
 
     private void sendJsonMessage(WebSocketSession session, Map<String, Object> messageData) throws Exception {

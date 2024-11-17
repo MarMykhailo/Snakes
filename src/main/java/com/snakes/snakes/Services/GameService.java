@@ -17,14 +17,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GameService {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
-
-    Player player;
-    Room room;
+    public Room room;
 
     public GameService() {
-        this.player = new Player("Player");
-        this.room = new Room();
-        room.players.add(player);
+        room = new Room();
     }
 
     public void handleMassage(WebSocketSession session, Map<String, Object> messageData) throws Exception {
@@ -102,31 +98,48 @@ public class GameService {
 
     public void changeDirection(WebSocketSession session, Map<String, Object> messageData) {
         String direction = (String) messageData.get("direction");
-        room.players.get(0).snake.changeDirection(direction);
-        // update();
-        // draw(session);
+        Player player = room.players.stream()
+            .filter(p -> p.session.equals(session))
+            .findFirst()
+            .orElse(null);
+        if (player != null) {
+            player.snake.changeDirection(direction);
+        }
     }
 
     public void update() {
         // оновлення позиції змійки
-        room.players.get(0).snake.update();
+        for (Player player : room.players) {
+            player.snake.update();
+        }
     }
 
-    public void draw(WebSocketSession session){
-        // відправка нової позиції змійки
+    public void draw(WebSocketSession session) {
         try {
             Map<String, Object> messageData = new HashMap<>();
             messageData.put("type", "update");
-            messageData.put("cells",  room.players.get(0).snake.body.stream().map(cell -> {
-                Map<String, Object> cellData = new HashMap<>();
-                cellData.put("x", cell.x);
-                cellData.put("y", cell.y);
-                cellData.put("color", "green");
-                return cellData;
-            }).collect(Collectors.toList()));
-            sendJsonMessage(session, messageData);
+
+            messageData.put("cells", room.players.stream()
+                .flatMap(player -> player.snake.body.stream())
+                .map(cell -> {
+                    Map<String, Object> cellData = new HashMap<>();
+                    cellData.put("x", cell.x);
+                    cellData.put("y", cell.y);
+                    cellData.put("color", "green");
+                    return cellData;
+                }).collect(Collectors.toList()));
+
+            for (Player player : room.players) {
+                sendJsonMessage(player.session, messageData);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void addPlayer(WebSocketSession session) {
+        Player player = new Player("Player");
+        player.session = session;
+        room.players.add(player);
     }
 }

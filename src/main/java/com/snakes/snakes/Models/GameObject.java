@@ -1,8 +1,10 @@
 package com.snakes.snakes.Models;
 
-    public interface GameObject {
+import java.util.Map;
+
+public interface GameObject {
         void update();
-        void draw();
+        Map<String, Object> draw();
         boolean intersects(Point cell);
     }
 

@@ -19,5 +19,13 @@ public class Room {
         this.isStarted = false;
         this.isRunning = false;
         this.players = new ArrayList<>();
+        this.objects = new ArrayList<>();
+
+        objects.add(new Wall(new Point(3, 3)));
+        objects.add(new Wall(new Point(4, 1)));
+        objects.add(new Wall(new Point(0, 4)));
+        objects.add(new Wall(new Point(10, 3)));
+
+        objects.add(new Apple(new Point(5, 5)));
     }
 }

@@ -2,7 +2,7 @@ package com.snakes.snakes.Models;
 
 import java.util.List;
 
-public class Snake {
+public class Snake implements GameObject {
     public List<Point> body;
     public Point direction;
 
@@ -32,6 +32,7 @@ public class Snake {
         }
     }
 
+    @Override
     public void update()
     {
         if(body.size()< 2) return;
@@ -40,6 +41,26 @@ public class Snake {
         body.remove(body.size() - 1);
     }
 
+    @Override
+    public java.util.Map<String, Object> draw()
+    {
+        java.util.Map<String, Object> json = new java.util.HashMap<>();
+        List<int[]> coordinates = new java.util.ArrayList<>();
+        for (Point point : body) {
+            coordinates.add(new int[]{point.x, point.y});
+        }
+        json.put("x", coordinates.stream().map(coord -> coord[0]).toArray());
+        json.put("y", coordinates.stream().map(coord -> coord[1]).toArray());
+        json.put("color", "green");
+        return json;
+    }
+
+    @Override
+    public boolean intersects(Point cell)
+    {
+        return body.stream().anyMatch(point -> point.equals(cell));
+    }
+    
     public void grow()
     {
         Point tail = body.get(body.size() - 1);

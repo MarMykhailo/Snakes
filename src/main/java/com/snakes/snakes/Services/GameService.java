@@ -1,6 +1,8 @@
 package com.snakes.snakes.Services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.concurrent.ExecutorService;
@@ -11,6 +13,9 @@ import org.springframework.web.socket.TextMessage;
 
 import com.snakes.snakes.Models.Point;
 import com.snakes.snakes.Models.Snake;
+import com.snakes.snakes.Models.Wall;
+import com.snakes.snakes.Models.Apple;
+import com.snakes.snakes.Models.GameObject;
 import com.snakes.snakes.Models.Player;
 import com.snakes.snakes.Models.Room;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -138,7 +143,24 @@ public class GameService {
                 }
             }
 
-
+            // перевірка зіткнень з обєктами на карті
+            for (GameObject objects : room.objects) {
+                if (objects.intersects(head)) {
+                    if(objects instanceof Apple) {
+                        player.snake.grow();
+                    }
+                    else if(objects instanceof Wall) {
+                        player.snake.body.clear();
+                    }
+                    /*else if(objects instanceof Bomb) {
+                        player.snake.body.clear();
+                    }
+                    else if(objects instanceof Portal) {
+                        player.snake.body.clear();
+                    }*/
+                    break;
+                }
+            }
 
             // зіткнення з обєктом на карті - залежить від типу обєкта
             // зіткнення з іншою змійкою - смерть
@@ -150,19 +172,30 @@ public class GameService {
             Map<String, Object> messageData = new HashMap<>();
             messageData.put("type", "update");
 
-            messageData.put("cells", room.players.stream()
-                .flatMap(player -> player.snake.body.stream())
-                .map(cell -> {
-                    Map<String, Object> cellData = new HashMap<>();
-                    cellData.put("x", cell.x);
-                    cellData.put("y", cell.y);
-                    cellData.put("color", "green");
-                    return cellData;
-                }).collect(Collectors.toList()));
+            List<Map<String, Object>> cells = new ArrayList<>();
+
+            cells.addAll(room.players.stream()
+                .flatMap(player -> player.snake.body.stream()
+                    .map(cell -> {
+                        Map<String, Object> cellData = new HashMap<>();
+                        cellData.put("x", cell.x);
+                        cellData.put("y", cell.y);
+                        cellData.put("color", "green");
+                        return cellData;
+                    }))
+                .collect(Collectors.toList()));
+
+            cells.addAll(room.objects.stream()
+                .map(GameObject::draw)
+                .collect(Collectors.toList()));
+
+            messageData.put("cells", cells);
 
             for (Player player : room.players) {
                 sendJsonMessage(player.session, messageData);
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

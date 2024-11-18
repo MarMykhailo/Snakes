@@ -144,12 +144,14 @@ public class GameService {
             }
 
             // перевірка зіткнень з обєктами на карті
-            for (GameObject objects : room.objects) {
-                if (objects.intersects(head)) {
-                    if(objects instanceof Apple) {
+            for (GameObject object : room.objects) {
+                if (object.intersects(head)) {
+                    if(object instanceof Apple) {
+                        // Remove the apple
+                        room.objects.remove(object);
                         player.snake.grow();
                     }
-                    else if(objects instanceof Wall) {
+                    else if(object instanceof Wall) {
                         player.snake.body.clear();
                     }
                     /*else if(objects instanceof Bomb) {
@@ -161,9 +163,6 @@ public class GameService {
                     break;
                 }
             }
-
-            // зіткнення з обєктом на карті - залежить від типу обєкта
-            // зіткнення з іншою змійкою - смерть
         }
     }
 

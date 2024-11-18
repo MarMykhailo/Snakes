@@ -1,7 +1,7 @@
 class GameSocket {
     constructor() {
         const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${wsProtocol}//192.168.0.103:8080/snake-websocket`;
+        const wsUrl = `${wsProtocol}//${window.location.hostname}:${window.location.port}/snake-websocket`;
         this.connect(wsUrl);
     }
 

@@ -1,0 +1,226 @@
+.deleteStudent-btn, .editStudent-btn, .Student-btn {
+    color: black;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+    padding: 0;
+}
+
+
+
+.main-content-heder {
+    display: flex;
+    justify-content: space-between;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    align-items: center;
+    overflow-x: auto;
+
+    max-height: 100vh; /* or any other value that suits your needs */
+    overflow-y: auto;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    padding: 2px;
+    text-align: center;
+    white-space:nowrap;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+
+input[type="text"], input[type="number"], input[type="email"], textarea {
+    border: 1px solid #dddddd;
+    text-align: center;
+    white-space: nowrap;
+    width: calc(40% - 10px);
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding: 5px;
+    vertical-align: middle;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, textarea:focus {
+    outline: none;
+    border-color: #66afe9;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+    padding: 5px;
+    vertical-align: middle;
+}
+
+select {
+    border: 1px solid #dddddd;
+    text-align: center;
+    white-space: nowrap;
+    width: calc(30% - 10px);
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 5px;
+    vertical-align: middle;
+}
+
+select:focus {
+    outline: none;
+    border-color: #66afe9;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+}
+
+.status-circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-checked {
+    background-color: green;
+}
+
+.status-unchecked {
+    background-color: transparent;
+    border: 1px solid #000;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+    height:300px;
+    overflow: auto;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.form {
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 50px auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    display: none;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: calc(100% - 10px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #66afe9;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+}
+
+.form-group::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.btn-close {
+    background-color: #ccc;
+    color: #000;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    float: right;
+}
+
+.ui-dialog {
+    width: 400px;
+}
+
+
+#studentForm div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0px;
+}
+
+/* Стилі для екранів з шириною менше 600px */
+@media (max-width: 600px) {
+    #studentForm {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* Стилі для екранів з шириною від 600px до 1200px */
+@media (min-width: 600px) and (max-width: 1200px) {
+    #studentForm {
+        height: auto;
+    }
+}
+
+/* Стилі для екранів з шириною більше 1200px */
+@media (min-width: 1200px) {
+    #studentForm {
+        height: auto;
+    }
+}
+
+
+#gender {
+    width: 80%; /* Зменшуємо ширину до 80% від поточної */
+}
+

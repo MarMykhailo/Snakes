@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Змії</title>
     <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/menu.css">
     <script type="text/javascript" src="/js/main.js" defer></script>
     <script type="text/javascript" src="/js/GameRenderer.js"></script>
     <script type="text/javascript" src="/js/GameSocket.js"></script>
@@ -22,7 +23,7 @@
             
         </div>
 		<div class="header-text">
-            <h1>Змії</h1>
+            <h1>Ігри</h1>
         </div>
     </div>
     <div class="container">
@@ -32,14 +33,23 @@
         </div>
         <div class="main-content" id="mainContent">
             <div class="container">
-                <a href="/snakes" class="button">Змії</a>
                 <!-- <batton href=".html">Виживалка</batton> -->
 
                 <!--
                 - гавець вибирає тип гри  - у майбутньому має бути кілька ігор
                 - гравець вибирає кімнату із таблиці кімнат (кнопка навпроти кімнати і якщо гравець залогінився то він може почати гру )
                 - є опція створити кімнату -->
-
+                <div class="game-selection"></div>
+                    <a href="/snakes" class="button">Ігри</a>
+                </div>
+                <div class="room-creation">
+                    <select id="gameType" name="gameType">
+                        <option value="snakes">Змії</option>
+                        <option value="survival">Виживалка</option>
+                    </select>
+                    <input type="text" id="roomName" name="roomName" placeholder="Введіть назву кімнати">
+                    <button onclick="createRoom()">Створити</button>
+                </div>
                 <table>
                     <tr>
                         <th>Гра</th>

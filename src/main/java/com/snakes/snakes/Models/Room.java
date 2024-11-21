@@ -14,7 +14,7 @@ public class Room {
 
     public Room() {
         this.roomId = 1;
-        this.maxPlayers = 2;
+        this.maxPlayers = 4;
         this.roomName = "Room";
         this.isStarted = false;
         this.isRunning = false;

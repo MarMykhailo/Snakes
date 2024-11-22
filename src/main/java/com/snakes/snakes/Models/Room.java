@@ -42,6 +42,7 @@ public class Room {
     }
 
     public boolean addPlayer(Player player) {
+        System.out.println("Player added");
         players.add(player);
         return true;
     }

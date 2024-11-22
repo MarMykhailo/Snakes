@@ -2,6 +2,7 @@ package com.snakes.snakes.Services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes.Name;
 
 import org.springframework.stereotype.Service;
 
@@ -29,26 +30,32 @@ public class RoomService {
         return rooms.removeIf(room -> room.id == id);
     }
 
-    public boolean joinPlayer(Long playerId, Long roomId) {
+    public boolean joinPlayer(String name , Long roomId) {
         for (Room room : rooms) {
             if (room.id == roomId) {
                 Player player = players.stream()
-                                       .filter(p -> p.id == playerId)
+                                       .filter(p -> p.name.equals(name))
                                        .findFirst()
                                        .orElse(null);
                 if (player != null) {
+                    System.out.println("Player isn't null");
                     return room.addPlayer(player);
+                }else{
+                    System.out.println("Player is null");
+                    Player newPlayer = new Player(name);
+                    return room.addPlayer(newPlayer);
                 }
             }
         }
         return false;
     }
 
-    public boolean leaveRoom(Long playerId, Long roomId) {
+    public boolean leaveRoom(String nickname, Long roomId) {
+
         for (Room room : rooms) {
             if (room.id == roomId) {
                 Player player = players.stream()
-                                       .filter(p -> p.id == playerId)
+                                       .filter(p -> p.name == nickname)
                                        .findFirst()
                                        .orElse(null);
                 if (player != null) {

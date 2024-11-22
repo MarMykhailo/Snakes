@@ -92,8 +92,6 @@ function deleteRoom(id) {
 function joinRoom(id) {
     var nickname = document.getElementById("nickname").value;
 
-    // Implement the logic to join the room
-    alert("Joining room: " + id);
     fetch(`/join-room/${nickname}/${id}`, {
         method: 'GET',
         headers: {
@@ -104,7 +102,10 @@ function joinRoom(id) {
             localStorage.setItem('nickname', nickname);
             window.location.href = "/game";
         } else {
-            alert("Error joining room");
+            response.text().then(text => {
+                console.error('Error joining room:', text);
+                alert("Error joining room");
+            });
         }
     }).catch(error => {
         console.error('Error:', error);

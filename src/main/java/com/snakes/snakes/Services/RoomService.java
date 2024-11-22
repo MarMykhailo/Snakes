@@ -17,11 +17,13 @@ public class RoomService {
     private List<Room> rooms = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
 
-    public boolean createRoom() {
-        Room newRoom = new Room();
+    public boolean createRoom(String name, String type) {
+		Room newRoom = new Room();
+        newRoom.name = name;
+        //newRoom.type = type;
         rooms.add(newRoom);
         return true;
-    }
+	}
 
     public boolean deleteRoom(Long id) {
         return rooms.removeIf(room -> room.id == id);

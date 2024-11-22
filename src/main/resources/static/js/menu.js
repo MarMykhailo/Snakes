@@ -1,31 +1,27 @@
-function createRoom()
-{
+function createRoom() {
     var roomName = document.getElementById("roomName").value;
     var roomType = document.getElementById("gameType").value;
-    //var roomDescription = document.getElementById("roomDescription").value;
-
-    var room = {
-        name: roomName,
-        /*password: roomPassword,
-        capacity: roomCapacity,*/
-        type: roomType
-    };
-
     fetch('/create-room', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(room)
+        body: JSON.stringify({ name: roomName, type: roomType })
     }).then(response => {
-        if(response.ok) {
+        if (response.ok) {
             alert("Room created successfully");
             updateRooms();
         } else {
             alert("Error creating room");
         }
-    }); 
+    }).catch(error => {
+        console.error('Error:', error);
+        alert("Error creating room");
+    });
 }
+
+
+
 function updateRooms() {
     fetch('/rooms', {
         method: 'GET',

@@ -70,17 +70,38 @@ function addRoomToTable(room) {
     '</button>';
 }
 
-function joinRoom(id) {
-    // Implement the logic to join the room
-    alert("Joining room: " + id);
-    fetch('/join-room', {
-        method: 'POST',
+function deleteRoom(id) {
+    fetch(`/delete-room/${id}`, {
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: id })
+        }
     }).then(response => {
         if (response.ok) {
+            //alert("Room deleted successfully");
+            updateRooms();
+        } else {
+            //alert("Error deleting room");
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        //alert("Error deleting room");
+    });
+}
+
+function joinRoom(id) {
+    var nickname = document.getElementById("nickname").value;
+
+    // Implement the logic to join the room
+    alert("Joining room: " + id);
+    fetch(`/join-room/${nickname}/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (response.ok) {
+            localStorage.setItem('nickname', nickname);
             window.location.href = "/game";
         } else {
             alert("Error joining room");
@@ -90,26 +111,6 @@ function joinRoom(id) {
         alert("Error joining room");
     });
 }
-
-function deleteRoom(id) {
-    fetch(`/delete-room/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => {
-        if (response.ok) {
-            alert("Room deleted successfully");
-            updateRooms();
-        } else {
-            alert("Error deleting room");
-        }
-    }).catch(error => {
-        console.error('Error:', error);
-        alert("Error deleting room");
-    });
-}
-
 
 window.onload = function() {
 }

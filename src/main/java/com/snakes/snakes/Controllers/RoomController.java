@@ -48,9 +48,9 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/join-room/{playerId}/{id}")
-    public ResponseEntity<String> addPlayerToRoom(@PathVariable("playerId") Long playerId, @PathVariable("id") Long id) {
-        boolean isJoined = roomService.joinPlayer(playerId, id);
+    @GetMapping("/join-room/{nickname}/{id}")
+    public ResponseEntity<String> addPlayerToRoom(@PathVariable("nickname") Long nickname, @PathVariable("id") Long id) {
+        boolean isJoined = roomService.joinPlayer(nickname, id);
         if (isJoined) {
             return ResponseEntity.ok("Room joined successfully");
         } else {
@@ -58,9 +58,9 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/leave-room/{playerId}/{id}")
-    public ResponseEntity<String> leaveRoom(@PathVariable("playerId") Long playerId, @PathVariable("id") Long id) {
-        boolean isLeft = roomService.leaveRoom(playerId, id);
+    @GetMapping("/leave-room/{nickname}/{id}")
+    public ResponseEntity<String> leaveRoom(@PathVariable("nickname") Long nickname, @PathVariable("id") Long id) {
+        boolean isLeft = roomService.leaveRoom(nickname, id);
         if (isLeft) {
             return ResponseEntity.ok("Room left successfully");
         } else {

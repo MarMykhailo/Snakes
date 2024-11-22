@@ -1,7 +1,10 @@
-package com.snakes.snakes.Models;
+package com.snakes.snakes.Models.Snakes;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.snakes.snakes.Models.GameObject;
+import com.snakes.snakes.Models.Point;
 
 public class Wall implements GameObject {
     public Point position;
@@ -27,5 +30,4 @@ public class Wall implements GameObject {
     public boolean intersects(Point cell) {
         return position.equals(cell);
     }
-    
 }

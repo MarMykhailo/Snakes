@@ -1,20 +1,15 @@
 package com.snakes.snakes.Controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.snakes.snakes.Services.GameService;
+
 @Controller
-public class GameController {
-
-    @GetMapping("/")
-    public String menu() {
-        return "menu.html";
-    }
-
-    @GetMapping("/snakes")
-    public String snakes() {
-        return "snakes.html";
-    }
+public class MainController {
 
     @GetMapping("/statistics")
     public String statistics() {

@@ -1,9 +1,25 @@
 package com.snakes.snakes.Models;
 
-
+//Види ігор
 public class Game {
-    Room room;
+
     public Game() {
-        this.room = new Room();
+        //this.room = new Room();
     }
+
+    public void start() {
+        //rooms.isStarted = true;
+        //rooms.isRunning = true;
+    }
+
+    public void stop() {
+
+    }
+
+    public void pause() {
+
+    }
+
+
+
 }

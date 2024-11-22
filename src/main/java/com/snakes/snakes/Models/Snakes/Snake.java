@@ -1,6 +1,9 @@
-package com.snakes.snakes.Models;
+package com.snakes.snakes.Models.Snakes;
 
 import java.util.List;
+
+import com.snakes.snakes.Models.GameObject;
+import com.snakes.snakes.Models.Point;
 
 public class Snake implements GameObject {
     public List<Point> body;

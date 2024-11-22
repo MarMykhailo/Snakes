@@ -9,16 +9,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 
 import com.snakes.snakes.Models.Point;
-import com.snakes.snakes.Models.Wall;
-import com.snakes.snakes.Models.Apple;
+import com.snakes.snakes.Models.Snakes.Apple;
+import com.snakes.snakes.Models.Snakes.Wall;
 import com.snakes.snakes.Models.GameObject;
 import com.snakes.snakes.Models.Player;
 import com.snakes.snakes.Models.Room;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
+@Service
 public class GameService {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     public List<Room> rooms;
@@ -209,5 +212,11 @@ public class GameService {
 
     public void removePlayer(WebSocketSession session) {
         rooms.get(0).players.removeIf(player -> player.session.equals(session));
+    }
+
+    public boolean createRoom() {
+        Room newRoom = new Room();
+        rooms.add(newRoom);
+        return newRoom != null;
     }
 }

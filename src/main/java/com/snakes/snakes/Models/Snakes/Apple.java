@@ -1,7 +1,10 @@
-package com.snakes.snakes.Models;
+package com.snakes.snakes.Models.Snakes;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.snakes.snakes.Models.GameObject;
+import com.snakes.snakes.Models.Point;
 
 public class Apple implements GameObject {
     public Point position;

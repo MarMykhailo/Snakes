@@ -7,8 +7,8 @@ import com.snakes.snakes.Models.Snakes.Apple;
 import com.snakes.snakes.Models.Snakes.Wall;
 
 public class Room {
-    public int roomId;
-    public String roomName;
+    public Long id;
+    public String name;
     public boolean isStarted;
     public boolean isRunning;
     public int maxPlayers;
@@ -16,8 +16,8 @@ public class Room {
     public List<GameObject> objects;
 
     public Room() {
-        this.roomId = 1;
-        this.roomName = "Room";
+        this.id = 1L;
+        this.name = "Room";
         this.isStarted = false;
         this.isRunning = false;
         this.maxPlayers = 4;
@@ -41,12 +41,14 @@ public class Room {
         isRunning = false;
     }
 
-    public void addPlayer(Player player) {
+    public boolean addPlayer(Player player) {
         players.add(player);
+        return true;
     }
 
-    public void removePlayer(Player player) {
+    public boolean removePlayer(Player player) {
         players.remove(player);
+        return true;
     }
 
     public void update() {

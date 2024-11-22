@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.snakes.snakes.Services.RoomService;
 
@@ -20,7 +21,7 @@ public class RoomController {
         return "menu.html";
     }
 
-    @GetMapping("/create-room")
+    @PostMapping("/create-room")
     public ResponseEntity<String> createRoom() {
         boolean isCreated = roomService.createRoom();
         if (isCreated) {
@@ -41,8 +42,8 @@ public class RoomController {
     }
 
     @GetMapping("/join-room/{playerId}/{id}")
-    public ResponseEntity<String> joinRoom(@PathVariable("playerId") Long playerId, @PathVariable("id") Long id) {
-        boolean isJoined = roomService.joinRoom(playerId, id);
+    public ResponseEntity<String> addPlayerToRoom(@PathVariable("playerId") Long playerId, @PathVariable("id") Long id) {
+        boolean isJoined = roomService.joinPlayer(playerId, id);
         if (isJoined) {
             return ResponseEntity.ok("Room joined successfully");
         } else {
@@ -63,5 +64,5 @@ public class RoomController {
     @GetMapping("/rooms")
     public ResponseEntity<Object> getRooms() {
         return ResponseEntity.ok(roomService.getRooms());
-    } 
+    }
 }

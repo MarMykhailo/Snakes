@@ -2,7 +2,10 @@ package com.snakes.snakes.Models;
 
 import org.springframework.web.socket.WebSocketSession;
 
+import com.snakes.snakes.Models.Snakes.Snake;
+
 public class Player {
+    public Long id;
     public String name;
     public Snake snake;
     public int score;

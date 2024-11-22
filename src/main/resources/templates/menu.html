@@ -7,9 +7,8 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/menu.css">
     <script type="text/javascript" src="/js/main.js" defer></script>
-    <script type="text/javascript" src="/js/GameRenderer.js"></script>
+    <script type="text/javascript" src="/js/menu.js"></script>
     <script type="text/javascript" src="/js/GameSocket.js"></script>
-
 </head>
 <body>
 <div>
@@ -20,7 +19,6 @@
                     <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
                 </svg>
             </button>
-            
         </div>
 		<div class="header-text">
             <h1>Ігри</h1>
@@ -50,7 +48,7 @@
                     <input type="text" id="roomName" name="roomName" placeholder="Введіть назву кімнати">
                     <button onclick="createRoom()">Створити</button>
                 </div>
-                <table>
+                <table class="roomTable">
                     <tr>
                         <th>Гра</th>
                         <th>Кімната</th>

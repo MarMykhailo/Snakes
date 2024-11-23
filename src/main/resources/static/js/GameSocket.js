@@ -103,6 +103,15 @@ class GameSocket {
         });
     }
 
+    sendConnectConmmand(id) {
+        this.sendMessage({
+            type: "room",
+            action: "attribution",
+            name: localStorage.nickname,
+            roomId: id
+        });
+    }
+
     sendPauseCommand(direction) {
         this.sendMessage({
             type: "game",
@@ -121,22 +130,22 @@ class GameSocket {
 }
 
 // Створюємо єдиний екземпляр GameSocket
-const gameSocket = new GameSocket();
+const socket = new GameSocket();
 
 // Функція для обробки натиснень кнопок керування
 function sendMove(direction) {
-    gameSocket.sendMoveCommand(direction);
+    socket.sendMoveCommand(direction);
 }
 
-// Експортуємо gameSocket для використання в інших файлах
-window.gameSocket = gameSocket;
+// Експортуємо socket для використання в інших файлах
+window.socket = socket;
 /*
 // Ініціалізація WebSocket-з'єднання
-const gameSocket = new GameSocket("ws://192.168.0.103:8080/snake-websocket");
+const socket = new GameSocket("ws://192.168.0.103:8080/snake-websocket");
 
 // Функція для обробки натиснень кнопок керування
 function sendMove(direction) {
-    gameSocket.sendMoveCommand(direction);
+    socket.sendMoveCommand(direction);
 }*/
 
 

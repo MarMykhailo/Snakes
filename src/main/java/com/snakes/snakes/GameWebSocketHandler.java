@@ -6,6 +6,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snakes.snakes.Services.GameService;
+import com.snakes.snakes.Services.RoomService;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.HashMap;
@@ -17,6 +18,9 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
 
     @Autowired
     private GameService gameService;
+
+    @Autowired
+    private RoomService roomService;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -42,6 +46,9 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             switch (messageType) {
                 case "connect":
                     handleConnect(session, messageData);
+                    break;
+                case "room":
+                    roomService.handleMassage(session, messageData);
                     break;
                 case "game":
                     gameService.handleMassage(session, messageData);

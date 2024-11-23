@@ -37,14 +37,14 @@ window.onload = function() {
 
 
 function startGame() {
-    window.gameSocket.sendStartCommand();
+    window.socket.sendStartCommand();
 }
 function pauseGame() {
-    window.gameSocket.sendPauseCommand();
+    window.socket.sendPauseCommand();
 }
 
 function resumeGame() {
-    window.gameSocket.sendResumeCommand();
+    window.socket.sendResumeCommand();
 }
 
 

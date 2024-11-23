@@ -61,7 +61,7 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/leave-room/{nickname}/{id}")
+    @GetMapping("/leave-room/{nickname}/{id}") //не тестив
     public ResponseEntity<String> leaveRoom(@PathVariable("nickname") String nickname, @PathVariable("id") Long id) {
         boolean isLeft = roomService.leaveRoom(nickname, id);
         if (isLeft) {

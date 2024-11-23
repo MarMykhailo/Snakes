@@ -78,7 +78,6 @@ public class GameService {
     }
 
     public void startGame(WebSocketSession session) {
-        //вивід списку кімнат з гравцями 
         rooms.forEach(room -> {
             System.out.println("Room ID: " + room.id);
             room.players.forEach(player -> {
@@ -89,10 +88,12 @@ public class GameService {
             .filter(r -> r.players.stream().anyMatch(player -> player.session.equals(session)))
             .findFirst()
             .orElse(null);
+        room.isStarted = true;
+        room.isRunning = true;
         while (room.isStarted) {
             if (room.isRunning)
                 update(room);
-                draw(session);
+                draw(room, session);
             try {
                 Thread.sleep(250);
             } catch (InterruptedException e) {
@@ -137,6 +138,12 @@ public class GameService {
         // оновлення позиції змійки
         if(room.players.size() != 0 && room.isRunning == true && room.isStarted == true) {
         {
+            System.out.println("update");
+            if(room.players.size() == 0){
+                room.isRunning = false;
+                room.isStarted = false;
+            }
+
             for (Player player : room.players) {
                 player.snake.update();
                 // перевірка на зіткнення
@@ -151,6 +158,7 @@ public class GameService {
                 for (int i = 1; i < player.snake.body.size(); i++) {
                     if (head.equals(player.snake.body.get(i))) {
                         player.snake.body.clear();
+                        room.players.remove(player);
                         break;
                     }
                 }
@@ -161,6 +169,7 @@ public class GameService {
                         for (Point point : otherPlayer.snake.body) {
                             if (head.equals(point)) {
                                 player.snake.body.clear();
+                                room.removePlayer(player);
                                 break;
                             }
                         }
@@ -192,17 +201,12 @@ public class GameService {
     }
 }
 
-    public void draw(WebSocketSession session) {
+    public void draw(Room room, WebSocketSession session) {
         try {
             Map<String, Object> messageData = new HashMap<>();
             messageData.put("type", "update");
 
             List<Map<String, Object>> cells = new ArrayList<>();
-
-            Room room = rooms.stream()
-            .filter(r -> r.players.stream().anyMatch(player -> player.session.equals(session)))
-            .findFirst()
-            .orElse(null);
 
             cells.addAll(room.players.stream()
                 .flatMap(player -> player.snake.body.stream()

@@ -47,6 +47,13 @@ public class RoomService {
                              .orElse(null);
             if(room != null) {
                 System.out.println("Added player");
+                //первірка на унікальність (чи моє таке імя)
+                boolean isUnique = room.players.stream()
+                                               .noneMatch(p -> p.name.equals(name));
+                if (!isUnique) {
+                    System.out.println("Player name is not unique in the room");
+                    return true;
+                }
                 return room.addPlayer(player);
             }
             System.out.println("Room is null");

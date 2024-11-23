@@ -57,7 +57,6 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
                     handleConnect(session, messageData);
                     break;
                 case "room":
-                    System.out.println("room handler");
                     roomService.handleMassage(session, messageData);
                     break;
                 case "game":

@@ -7,6 +7,7 @@ import com.snakes.snakes.Models.Snakes.Apple;
 import com.snakes.snakes.Models.Snakes.Wall;
 
 public class Room {
+    static Long idCout = 0L ;
     public Long id;
     public String name;
     public boolean isStarted;
@@ -16,7 +17,7 @@ public class Room {
     public List<GameObject> objects;
 
     public Room() {
-        this.id = 1L;
+        this.id = idCout++;
         this.name = "Room";
         this.isStarted = false;
         this.isRunning = false;

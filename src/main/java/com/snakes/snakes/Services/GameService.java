@@ -1,5 +1,6 @@
 package com.snakes.snakes.Services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,16 +30,18 @@ public class GameService {
     public GameService() {
     }
 
-    public void sendJsonMessage(WebSocketSession session, Map<String, Object> messageData) {
-        executorService.submit(() -> {
-            try {
-                String jsonMessage = new ObjectMapper().writeValueAsString(messageData);
+    public void sendJsonMessage(WebSocketSession session, Map<String, Object> message) {
+    if (session.isOpen()) {
+        try {
+            String jsonMessage = new ObjectMapper().writeValueAsString(message);
                 session.sendMessage(new TextMessage(jsonMessage));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } else {
+        System.out.println("WebSocket session is closed. Cannot send message.");
     }
+}
 
     public void handleMassage(WebSocketSession session, Map<String, Object> messageData) throws Exception {
         String messageType = (String) messageData.get("action");
@@ -136,13 +139,18 @@ public class GameService {
 
     public void update(Room room) {
         // оновлення позиції змійки
-        if(room.players.size() != 0 && room.isRunning == true && room.isStarted == true) {
+        
+        System.out.println("num players" + room.players.size() );
+        if(room.players.size() == 0){
+            System.out.println("Game over");
+            room.isRunning = false;
+            room.isStarted = false;
+            return;
+        }
+        if(room.isRunning == true && room.isStarted == true) {
         {
             System.out.println("update");
-            if(room.players.size() == 0){
-                room.isRunning = false;
-                room.isStarted = false;
-            }
+            
 
             for (Player player : room.players) {
                 player.snake.update();
@@ -164,12 +172,12 @@ public class GameService {
                 }
 
                 // Check collision with other players' snakes
-                for (Player otherPlayer : rooms.get(0).players) {
+                for (Player otherPlayer : room.players) {
                     if (otherPlayer != player) {
                         for (Point point : otherPlayer.snake.body) {
                             if (head.equals(point)) {
                                 player.snake.body.clear();
-                                room.removePlayer(player);
+                                room.players.remove(player);
                                 break;
                             }
                         }

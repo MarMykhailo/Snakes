@@ -60,7 +60,7 @@ public class RoomService {
         } else {
             System.out.println("Player is null");
             Player newPlayer = new Player(name);
-            players.add(newPlayer);
+            //players.add(newPlayer);
             newPlayer.session = session;
             Room room = rooms.stream()
                              .filter(r -> r.id.equals(roomId))

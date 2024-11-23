@@ -72,6 +72,6 @@ public class RoomService {
         for (Room room : rooms) {
             roomDetailsList.add(room);
         }
-        return ResponseEntity.ok(roomDetailsList);
+        return ResponseEntity.ok(roomDetailsList);//треба зробитити щоб повертався ще тип кімнати(мож у самому класі Room прописати тип)
     }
 }

@@ -54,7 +54,8 @@ function addRoomToTable(room) {
     var cell2 = row.insertCell(1);
     var cell3 = row.insertCell(2);
 
-    cell1.innerHTML = room.type;
+    //cell1.innerHTML = room.type;
+    cell1.innerHTML = "Змії";
     cell2.innerHTML = room.name;
     cell3.innerHTML =
     '<button onclick="joinRoom(\'' + room.id + '\')">' +

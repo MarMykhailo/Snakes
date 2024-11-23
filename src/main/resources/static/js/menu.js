@@ -101,7 +101,8 @@ function joinRoom(id) {
     }).then(response => {
         if (response.ok) {
             localStorage.setItem('nickname', nickname);
-            window.socket.sendConnectConmmand(id);
+            localStorage.setItem('roomId', id);
+            //window.socket.sendConnectConmmand(id);
             window.location.href = "/snakes";
         } else {
             response.text().then(text => {

@@ -9,6 +9,9 @@ import com.snakes.snakes.Services.GameService;
 import com.snakes.snakes.Services.RoomService;
 
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.PostConstruct;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +24,12 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
 
     @Autowired
     private RoomService roomService;
+
+    @PostConstruct
+    public void init() {
+        gameService.rooms = roomService.rooms;
+    }
+
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -48,6 +57,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
                     handleConnect(session, messageData);
                     break;
                 case "room":
+                    System.out.println("room handler");
                     roomService.handleMassage(session, messageData);
                     break;
                 case "game":
@@ -74,7 +84,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         welcomeMessage.put("timestamp", System.currentTimeMillis());
         sendJsonMessage(session, welcomeMessage);
 
-        gameService.addPlayer(session);
+        //gameService.addPlayer(session);
     }
 
     private void sendJsonMessage(WebSocketSession session, Map<String, Object> messageData) throws Exception {
@@ -86,6 +96,6 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) throws Exception {
         sessions.remove(session.getId());
         System.out.println("WebSocket connection closed: " + session.getId());
-        gameService.removePlayer(session);
+        //gameService.removePlayer(session);
     }
 }

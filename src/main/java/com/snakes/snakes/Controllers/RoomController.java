@@ -50,7 +50,7 @@ public class RoomController {
     @GetMapping("/join-room/{nickname}/{id}")
     public ResponseEntity<String> addPlayerToRoom(@PathVariable("nickname") String nickname, @PathVariable("id") Long id) {
         System.out.println("Joining player " + nickname + " to room " + id);
-        boolean isJoined = roomService.joinPlayer(nickname, id);
+        boolean isJoined = true;//roomService.joinPlayer(nickname, id);
         System.out.println("isJoined: " + isJoined);
         if (isJoined) {
             System.out.println("Player joined successfully");

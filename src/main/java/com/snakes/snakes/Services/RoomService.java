@@ -19,8 +19,8 @@ import org.springframework.web.socket.WebSocketSession;
 
 @Service
 public class RoomService {
-    private List<Room> rooms = new ArrayList<>();
-    private List<Player> players = new ArrayList<>();
+    public List<Room> rooms = new ArrayList<>();
+    public List<Player> players = new ArrayList<>();
 
     public boolean createRoom(String name, String type) {
         Room newRoom = new Room();
@@ -34,23 +34,36 @@ public class RoomService {
         return rooms.removeIf(room -> room.id.equals(id));
     }
 
-    public boolean joinPlayer(String name, Long roomId) {
-        for (Room room : rooms) {
-            if (room.id.equals(roomId)) {
-                Player player = players.stream()
-                                       .filter(p -> p.name.equals(name))
-                                       .findFirst()
-                                       .orElse(null);
-                if (player != null) {
-                    System.out.println("Player isn't null");
-                    return room.addPlayer(player);
-                } else {
-                    System.out.println("Player is null");
-                    Player newPlayer = new Player(name);
-                    players.add(newPlayer);
-                    return room.addPlayer(newPlayer);
-                }
+    public boolean joinPlayer(WebSocketSession session, String name, Long roomId) {
+        Player player = players.stream()
+                               .filter(p -> p.name.equals(name))
+                               .findFirst()
+                               .orElse(null);
+        if(player != null) {
+            player.session = session;
+            Room room = rooms.stream()
+                             .filter(r -> r.id.equals(roomId))
+                             .findFirst()
+                             .orElse(null);
+            if(room != null) {
+                System.out.println("Added player");
+                return room.addPlayer(player);
             }
+            System.out.println("Room is null");
+        } else {
+            System.out.println("Player is null");
+            Player newPlayer = new Player(name);
+            players.add(newPlayer);
+            newPlayer.session = session;
+            Room room = rooms.stream()
+                             .filter(r -> r.id.equals(roomId))
+                             .findFirst()
+                             .orElse(null);
+            if(room != null) {
+                System.out.println("Added player");
+                return room.addPlayer(newPlayer);
+            }
+            return true;
         }
         return false;
     }
@@ -77,9 +90,11 @@ public class RoomService {
 
     public void handleMassage(WebSocketSession session, Map<String, Object> messageData) throws Exception {
         String messageType = (String) messageData.get("action");
+        System.out.println("Received message (Room): " + messageData);
         switch (messageType) {
             case "attribution":
                 handleAttribution(session, messageData);
+                System.out.println("Attribution");
                 break;
             default:
                 Map<String, Object> errorMessage = new HashMap<>();
@@ -91,8 +106,18 @@ public class RoomService {
 
     private void handleAttribution(WebSocketSession session, Map<String, Object> messageData) throws Exception {
         String name = (String) messageData.get("name");
-        Long roomId = (Long) messageData.get("roomId");
-        joinPlayer(name, roomId);
+        String roomIds = (String) messageData.get("roomId");
+
+        long roomId = Long.parseLong(roomIds);
+        joinPlayer(session, name, roomId);
+        //виводжу кімнати та равців що в них
+        rooms.forEach(room -> {
+            System.out.println("Room ID: " + room.id);
+            room.players.forEach(player -> {
+                System.out.println("Player: " + player.name);
+            });
+        });
+        System.out.println("end print");
     }
 
     private void sendJsonMessage(WebSocketSession session, Map<String, Object> message) throws Exception {

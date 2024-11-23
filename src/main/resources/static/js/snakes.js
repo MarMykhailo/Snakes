@@ -37,6 +37,8 @@ window.onload = function() {
 
 
 function startGame() {
+    
+    window.socket.sendConnectConmmand();
     window.socket.sendStartCommand();
 }
 function pauseGame() {
@@ -48,3 +50,4 @@ function resumeGame() {
 }
 
 
+//window.socket.sendConnectConmmand();

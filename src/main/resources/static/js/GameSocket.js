@@ -103,12 +103,13 @@ class GameSocket {
         });
     }
 
-    sendConnectConmmand(id) {
+    sendConnectConmmand() {
+        console.log("connection....");
         this.sendMessage({
             type: "room",
             action: "attribution",
             name: localStorage.nickname,
-            roomId: id
+            roomId: localStorage.roomId
         });
     }
 

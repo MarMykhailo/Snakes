@@ -105,6 +105,7 @@ class GameSocket {
 
     sendConnectConmmand() {
         console.log("connection....");
+        console.log("localStorage.nickname: ", localStorage.nickname);
         this.sendMessage({
             type: "room",
             action: "attribution",

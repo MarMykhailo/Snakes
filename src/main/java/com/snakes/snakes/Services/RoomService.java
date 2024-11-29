@@ -92,6 +92,7 @@ public class RoomService {
 
     @GetMapping
     public ResponseEntity<List<Room>> getRooms() {
+        System.out.println("Rooms" + rooms);
         return ResponseEntity.ok(rooms);
     }
 
@@ -116,6 +117,7 @@ public class RoomService {
         String roomIds = (String) messageData.get("roomId");
 
         long roomId = Long.parseLong(roomIds);
+        System.out.println("RoomId" + roomIds + "nikName" + name);
         joinPlayer(session, name, roomId);
         //виводжу кімнати та равців що в них
         rooms.forEach(room -> {

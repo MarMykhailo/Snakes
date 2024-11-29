@@ -10,7 +10,7 @@ function createRoom() {
     }).then(response => {
         if (response.ok) {
             //alert("Room created successfully");
-            updateRooms();
+            Rooms();
         } else {
             //alert("Error creating room");
         }
@@ -20,9 +20,7 @@ function createRoom() {
     });
 }
 
-
-
-function updateRooms() {
+function Rooms() {
     fetch('/rooms', {
         method: 'GET',
         headers: {
@@ -42,6 +40,7 @@ function updateRooms() {
                 });
             });
         } else {
+            console.log(response);
             alert("Error getting rooms");
         }
     });
@@ -92,8 +91,11 @@ function deleteRoom(id) {
 
 function joinRoom(id) {
     var nickname = document.getElementById("nickname").value;
-
-    fetch(`/join-room/${nickname}/${id}`, {
+    localStorage.setItem('nickname', nickname);
+    localStorage.setItem('roomId', id);
+    //window.socket.sendConnectConmmand(id);
+    window.location.href = "/snakes";
+    /*fetch(`/join-room/${nickname}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -113,9 +115,9 @@ function joinRoom(id) {
     }).catch(error => {
         console.error('Error:', error);
         alert("Error joining room");
-    });
+    });*/
 }
 
 window.onload = function() {
 }
-updateRooms();
+Rooms();

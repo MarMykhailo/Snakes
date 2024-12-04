@@ -32,7 +32,10 @@
         <div class="main-content" id="mainContent">
             <div class="container">
                 <div class="game-selection"></div>
-                    <input type="text" id="nickname" name="nickname" placeholder="Введіть ваш нікнейм">
+                    <input type="text" id="nickname" name="nickname" placeholder="Введіть ваш нікнейм" value="">
+                    <script>
+                        document.getElementById('nickname').value = localStorage.getItem('nickname') || '';
+                    </script>
                 </div>
                 <div class="room-creation">
                     <select id="gameType" name="gameType">

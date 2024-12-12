@@ -1,0 +1,1 @@
+{"rooms":[{"id":0,"name":"Room3","isStarted":false,"isRunning":false,"maxPlayers":4,"players":[],"objects":[{"position":{"x":3,"y":3}},{"position":{"x":4,"y":1}},{"position":{"x":0,"y":4}},{"position":{"x":10,"y":3}},{"position":{"x":5,"y":5}}]}],"players":[]}

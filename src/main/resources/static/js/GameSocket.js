@@ -54,6 +54,9 @@ class GameSocket {
         this.sendMessage({
             type: "game",
             action: "changeDirection",
+            roomId: localStorage.roomId,
+            player: localStorage.nickname,
+            roomId: localStorage.roomId,
             direction: direction
         });
     }
@@ -83,6 +86,18 @@ class GameSocket {
         }
     }
 
+    sendConnectConmmand() {
+        console.log("connection....");
+        console.log("localStorage.nickname: ", localStorage.nickname);
+        this.sendMessage({
+            type: "room",
+            action: "attribution",
+            name: localStorage.nickname,
+            roomId: localStorage.roomId
+        });
+    }
+
+
     handleGameUpdate(payload) {
         console.log("Game update received:", payload);
         renderer.render(payload.cells);
@@ -95,36 +110,29 @@ class GameSocket {
         }
     }
 
-    sendStartCommand(direction) {
+    sendStartCommand() {
         this.sendMessage({
             type: "game",
+            roomId: localStorage.roomId,
+            player: localStorage.getItem('nickname'),
             action: "changeState",
             state: "start"
         });
     }
 
-    sendConnectConmmand() {
-        console.log("connection....");
-        console.log("localStorage.nickname: ", localStorage.nickname);
-        this.sendMessage({
-            type: "room",
-            action: "attribution",
-            name: localStorage.nickname,
-            roomId: localStorage.roomId
-        });
-    }
-
-    sendPauseCommand(direction) {
+    sendPauseCommand() {
         this.sendMessage({
             type: "game",
+            roomId: localStorage.roomId,
             action: "changeState",
             state: "pause"
         });
     }
 
-    sendResumeCommand(direction) {
+    sendResumeCommand() {
         this.sendMessage({
             type: "game",
+            roomId: localStorage.roomId,
             action: "changeState",
             state: "resume"
         });
